@@ -1,0 +1,27 @@
+
+
+Data analysis for each instance 
+AVG,MED,MAX,MIN
+0,0,0,0,
+
+
+0.026,0.022,0.096,-0.01,
+
+
+
+
+Further Data analysis of all test cases 
+avg med max min 
+AVGs,0,0,0,0,
+AVGs,0,0,0,0,
+AVGs,0,0,0,0,
+AVGs,0,0,0,0,
+
+
+AVGs,0.026,0.026,0.026,0.026,
+MEDs,0.022,0.022,0.022,0.022,
+MAXs,0.096,0.096,0.096,0.096,
+MINs,-0.01,-0.01,-0.01,-0.01,
+
+
+

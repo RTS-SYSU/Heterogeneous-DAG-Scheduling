@@ -1,0 +1,351 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Current File",
+            "request": "launch",
+            "mainClass": "${file}"
+        },
+        {
+            "type": "java",
+            "name": "CacheVariabilityProfile",
+            "request": "launch",
+            "mainClass": "uk.ac.york.mocha.simulator.entity.CacheVariabilityProfile",
+            "projectName": "cache-aware-allocation-main_b508bcf8"
+        },
+        {
+            "type": "java",
+            "name": "DAGtoPython",
+            "request": "launch",
+            "mainClass": "uk.ac.york.mocha.simulator.entity.DAGtoPython",
+            "projectName": "cache-aware-allocation-main_b508bcf8"
+        },
+        {
+            "type": "java",
+            "name": "RecencyProfileSyn",
+            "request": "launch",
+            "mainClass": "uk.ac.york.mocha.simulator.entity.RecencyProfileSyn",
+            "projectName": "cache-aware-allocation-main_b508bcf8"
+        },
+        {
+            "type": "java",
+            "name": "EP1_2",
+            "request": "launch",
+            "mainClass": "uk.ac.york.mocha.simulator.experiments_AJLR_v2_0.EP1_2",
+            "projectName": "cache-aware-allocation-main_b508bcf8"
+        },
+        {
+            "type": "java",
+            "name": "Evaluation",
+            "request": "launch",
+            "mainClass": "uk.ac.york.mocha.simulator.experiments_AJLR_v2_0.Evaluation",
+            "projectName": "cache-aware-allocation-main_b508bcf8"
+        },
+        {
+            "type": "java",
+            "name": "OneTaskCriticalVSNonCritical",
+            "request": "launch",
+            "mainClass": "uk.ac.york.mocha.simulator.experiments_AJLR_v2_0.OneTaskCriticalVSNonCritical",
+            "projectName": "cache-aware-allocation-main_b508bcf8"
+        },
+        {
+            "type": "java",
+            "name": "OneTaskUtilCompare",
+            "request": "launch",
+            "mainClass": "uk.ac.york.mocha.simulator.experiments_AJLR_v2_0.OneTaskUtilCompare",
+            "projectName": "cache-aware-allocation-main_b508bcf8"
+        },
+        {
+            "type": "java",
+            "name": "OneTaskUtilCompareThreeMethods",
+            "request": "launch",
+            "mainClass": "uk.ac.york.mocha.simulator.experiments_AJLR_v2_0.OneTaskUtilCompareThreeMethods",
+            "projectName": "cache-aware-allocation-main_b508bcf8"
+        },
+        {
+            "type": "java",
+            "name": "OneTaskUtilCompareV1andV2",
+            "request": "launch",
+            "mainClass": "uk.ac.york.mocha.simulator.experiments_AJLR_v2_0.OneTaskUtilCompareV1andV2",
+            "projectName": "cache-aware-allocation-main_b508bcf8"
+        },
+        {
+            "type": "java",
+            "name": "Recency3DCriticalVSNonCritical",
+            "request": "launch",
+            "mainClass": "uk.ac.york.mocha.simulator.experiments_AJLR_v2_0.Recency3DCriticalVSNonCritical",
+            "projectName": "cache-aware-allocation-main_b508bcf8"
+        },
+        {
+            "type": "java",
+            "name": "Test",
+            "request": "launch",
+            "mainClass": "uk.ac.york.mocha.simulator.experiments_AJLR_v2_0.Test",
+            "projectName": "cache-aware-allocation-main_b508bcf8"
+        },
+        {
+            "type": "java",
+            "name": "Test_EP_1_2",
+            "request": "launch",
+            "mainClass": "uk.ac.york.mocha.simulator.experiments_AJLR_v2_0.Test_EP_1_2",
+            "projectName": "cache-aware-allocation-main_b508bcf8"
+        },
+        {
+            "type": "java",
+            "name": "CARVB_BEFORE_AFTER_CC_AJLR",
+            "request": "launch",
+            "mainClass": "uk.ac.york.mocha.simulator.experiments_CARVB.CARVB_BEFORE_AFTER_CC_AJLR",
+            "projectName": "cache-aware-allocation-main_b508bcf8"
+        },
+        {
+            "type": "java",
+            "name": "CARVB_BEFORE_AFTER_CC_CARVB",
+            "request": "launch",
+            "mainClass": "uk.ac.york.mocha.simulator.experiments_CARVB.CARVB_BEFORE_AFTER_CC_CARVB",
+            "projectName": "cache-aware-allocation-main_b508bcf8"
+        },
+        {
+            "type": "java",
+            "name": "CARVB_BEFORE_AFTER_CC_NEW_NODE_PERCENT",
+            "request": "launch",
+            "mainClass": "uk.ac.york.mocha.simulator.experiments_CARVB.CARVB_BEFORE_AFTER_CC_NEW_NODE_PERCENT",
+            "projectName": "cache-aware-allocation-main_b508bcf8"
+        },
+        {
+            "type": "java",
+            "name": "CARVB_BEFORE_AFTER_NEW_ONE_NODE",
+            "request": "launch",
+            "mainClass": "uk.ac.york.mocha.simulator.experiments_CARVB.CARVB_BEFORE_AFTER_NEW_ONE_NODE",
+            "projectName": "cache-aware-allocation-main_b508bcf8"
+        },
+        {
+            "type": "java",
+            "name": "CARVB_CorrelationCoefficent",
+            "request": "launch",
+            "mainClass": "uk.ac.york.mocha.simulator.experiments_CARVB.CARVB_CorrelationCoefficent",
+            "projectName": "cache-aware-allocation-main_b508bcf8"
+        },
+        {
+            "type": "java",
+            "name": "CARVB_CorrelationCoefficentNew",
+            "request": "launch",
+            "mainClass": "uk.ac.york.mocha.simulator.experiments_CARVB.CARVB_CorrelationCoefficentNew",
+            "projectName": "cache-aware-allocation-main_b508bcf8"
+        },
+        {
+            "type": "java",
+            "name": "CARVB_CorrelationCoefficentNew_gyy",
+            "request": "launch",
+            "mainClass": "uk.ac.york.mocha.simulator.experiments_CARVB.CARVB_CorrelationCoefficentNew_gyy",
+            "projectName": "cache-aware-allocation-main_b508bcf8"
+        },
+        {
+            "type": "java",
+            "name": "CARVB_Different_Order",
+            "request": "launch",
+            "mainClass": "uk.ac.york.mocha.simulator.experiments_CARVB.CARVB_Different_Order",
+            "projectName": "cache-aware-allocation-main_b508bcf8"
+        },
+        {
+            "type": "java",
+            "name": "CARVB_ERROR_CRP",
+            "request": "launch",
+            "mainClass": "uk.ac.york.mocha.simulator.experiments_CARVB.CARVB_ERROR_CRP",
+            "projectName": "cache-aware-allocation-main_b508bcf8"
+        },
+        {
+            "type": "java",
+            "name": "CARVB_Empricial",
+            "request": "launch",
+            "mainClass": "uk.ac.york.mocha.simulator.experiments_CARVB.CARVB_Empricial",
+            "projectName": "cache-aware-allocation-main_b508bcf8"
+        },
+        {
+            "type": "java",
+            "name": "CARVB_General",
+            "request": "launch",
+            "mainClass": "uk.ac.york.mocha.simulator.experiments_CARVB.CARVB_General",
+            "projectName": "cache-aware-allocation-main_b508bcf8",
+            "vmArgs": "-Xmx10240m"
+        },
+        {
+            "type": "java",
+            "name": "CARVB_Rule1",
+            "request": "launch",
+            "mainClass": "uk.ac.york.mocha.simulator.experiments_CARVB.CARVB_Rule1",
+            "projectName": "cache-aware-allocation-main_b508bcf8"
+        },
+        {
+            "type": "java",
+            "name": "CARVB_Rule2",
+            "request": "launch",
+            "mainClass": "uk.ac.york.mocha.simulator.experiments_CARVB.CARVB_Rule2",
+            "projectName": "cache-aware-allocation-main_b508bcf8"
+        },
+        {
+            "type": "java",
+            "name": "CorrelationCoefficient",
+            "request": "launch",
+            "mainClass": "uk.ac.york.mocha.simulator.experiments_CARVB.CorrelationCoefficient",
+            "projectName": "cache-aware-allocation-main_b508bcf8"
+        },
+        {
+            "type": "java",
+            "name": "CorrelationCoefficient_fixedDAG",
+            "request": "launch",
+            "mainClass": "uk.ac.york.mocha.simulator.experiments_CARVB.CorrelationCoefficient_fixedDAG",
+            "projectName": "cache-aware-allocation-main_b508bcf8"
+        },
+        {
+            "type": "java",
+            "name": "ForDevelopment",
+            "request": "launch",
+            "mainClass": "uk.ac.york.mocha.simulator.experiments_CARVB.ForDevelopment",
+            "projectName": "cache-aware-allocation-main_b508bcf8"
+        },
+        {
+            "type": "java",
+            "name": "OneTask1000InstanceUtilCompare",
+            "request": "launch",
+            "mainClass": "uk.ac.york.mocha.simulator.experiments_CARVB.OneTask1000InstanceUtilCompare",
+            "projectName": "cache-aware-allocation-main_b508bcf8"
+        },
+        {
+            "type": "java",
+            "name": "VaraibilityEffects50vs50",
+            "request": "launch",
+            "mainClass": "uk.ac.york.mocha.simulator.experiments_CARVB.VaraibilityEffects50vs50",
+            "projectName": "cache-aware-allocation-main_b508bcf8"
+        },
+        {
+            "type": "java",
+            "name": "VariabilityChaing",
+            "request": "launch",
+            "mainClass": "uk.ac.york.mocha.simulator.experiments_CARVB.VariabilityChaing",
+            "projectName": "cache-aware-allocation-main_b508bcf8"
+        },
+        {
+            "type": "java",
+            "name": "VariabilityChaingByPercentage_oneDAG",
+            "request": "launch",
+            "mainClass": "uk.ac.york.mocha.simulator.experiments_CARVB.VariabilityChaingByPercentage_oneDAG",
+            "projectName": "cache-aware-allocation-main_b508bcf8"
+        },
+        {
+            "type": "java",
+            "name": "VariabilityRandom",
+            "request": "launch",
+            "mainClass": "uk.ac.york.mocha.simulator.experiments_CARVB.VariabilityRandom",
+            "projectName": "cache-aware-allocation-main_b508bcf8"
+        },
+        {
+            "type": "java",
+            "name": "EP1_2(1)",
+            "request": "launch",
+            "mainClass": "uk.ac.york.mocha.simulator.experiments_Paper_AJLR_v1_0.EP1_2",
+            "projectName": "cache-aware-allocation-main_b508bcf8"
+        },
+        {
+            "type": "java",
+            "name": "EP3_4",
+            "request": "launch",
+            "mainClass": "uk.ac.york.mocha.simulator.experiments_Paper_AJLR_v1_0.EP3_4",
+            "projectName": "cache-aware-allocation-main_b508bcf8"
+        },
+        {
+            "type": "java",
+            "name": "EP5_1",
+            "request": "launch",
+            "mainClass": "uk.ac.york.mocha.simulator.experiments_Paper_AJLR_v1_0.EP5_1",
+            "projectName": "cache-aware-allocation-main_b508bcf8"
+        },
+        {
+            "type": "java",
+            "name": "EP5_2",
+            "request": "launch",
+            "mainClass": "uk.ac.york.mocha.simulator.experiments_Paper_AJLR_v1_0.EP5_2",
+            "projectName": "cache-aware-allocation-main_b508bcf8"
+        },
+        {
+            "type": "java",
+            "name": "EP_Methods",
+            "request": "launch",
+            "mainClass": "uk.ac.york.mocha.simulator.experiments_Paper_AJLR_v1_0.EP_Methods",
+            "projectName": "cache-aware-allocation-main_b508bcf8"
+        },
+        {
+            "type": "java",
+            "name": "EP_multiDAG",
+            "request": "launch",
+            "mainClass": "uk.ac.york.mocha.simulator.experiments_Paper_AJLR_v1_0.EP_multiDAG",
+            "projectName": "cache-aware-allocation-main_b508bcf8"
+        },
+        {
+            "type": "java",
+            "name": "EP_multiDAG_onlyOnePeriodChanging",
+            "request": "launch",
+            "mainClass": "uk.ac.york.mocha.simulator.experiments_Paper_AJLR_v1_0.EP_multiDAG_onlyOnePeriodChanging",
+            "projectName": "cache-aware-allocation-main_b508bcf8"
+        },
+        {
+            "type": "java",
+            "name": "ExhaustiveSearching",
+            "request": "launch",
+            "mainClass": "uk.ac.york.mocha.simulator.experiments_Paper_AJLR_v1_0.ExhaustiveSearching",
+            "projectName": "cache-aware-allocation-main_b508bcf8"
+        },
+        {
+            "type": "java",
+            "name": "SimpleAllocationCompare",
+            "request": "launch",
+            "mainClass": "uk.ac.york.mocha.simulator.experiments_Paper_AJLR_v1_0.SimpleAllocationCompare",
+            "projectName": "cache-aware-allocation-main_b508bcf8"
+        },
+        {
+            "type": "java",
+            "name": "FiveNodeAllocation",
+            "request": "launch",
+            "mainClass": "uk.ac.york.mocha.simulator.experiments_real.FiveNodeAllocation",
+            "projectName": "cache-aware-allocation-main_b508bcf8"
+        },
+        {
+            "type": "java",
+            "name": "FiveNodeForCompare",
+            "request": "launch",
+            "mainClass": "uk.ac.york.mocha.simulator.experiments_real.FiveNodeForCompare",
+            "projectName": "cache-aware-allocation-main_b508bcf8"
+        },
+        {
+            "type": "java",
+            "name": "CacheHierarchy",
+            "request": "launch",
+            "mainClass": "uk.ac.york.mocha.simulator.generator.CacheHierarchy",
+            "projectName": "cache-aware-allocation-main_b508bcf8"
+        },
+        {
+            "type": "java",
+            "name": "UUnifastDiscard",
+            "request": "launch",
+            "mainClass": "uk.ac.york.mocha.simulator.generator.UUnifastDiscard",
+            "projectName": "cache-aware-allocation-main_b508bcf8"
+        },
+        {
+            "type": "java",
+            "name": "SimualtorNWC",
+            "request": "launch",
+            "mainClass": "uk.ac.york.mocha.simulator.simulator.SimualtorNWC",
+            "projectName": "cache-aware-allocation-main_b508bcf8"
+        },
+        {
+            "type": "java",
+            "name": "Utils",
+            "request": "launch",
+            "mainClass": "uk.ac.york.mocha.simulator.simulator.Utils",
+            "projectName": "cache-aware-allocation-main_b508bcf8"
+        }
+    ]
+}

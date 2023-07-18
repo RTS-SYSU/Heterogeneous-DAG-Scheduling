@@ -12,11 +12,20 @@ public class OnlineWFD extends AllocationMethods {
 
 	@Override
 	public void allocate(List<DirectedAcyclicGraph> dags, List<Node> readyNodes, List<List<Node>> localRunqueue,
-			List<Integer> availableProcs, long[] procs, List<List<Node>> history_level1,
+			List<Integer> cores, long[] procs, List<List<Node>> history_level1,
 			List<List<Node>> history_level2, List<Node> history_level3, List<List<Node>> allocHistory,
 			long currentTime, boolean affinity, List<Node> etHist, List<Double> speeds) {
 
-		if (readyNodes.size() == 0 || availableProcs.size() == 0)
+		List<Integer> freeProc = new ArrayList<>();
+		for (int i = 0; i < cores.size(); i++) {
+			// find the available cores
+			if (localRunqueue.get(i).size() == 0 && procs[i] <= currentTime)// to do: fake available cores
+				freeProc.add(i);
+		}
+		// higher speed core first
+		freeProc.sort((c1, c2) -> Double.compare(speeds.get(c2), speeds.get(c1)));
+
+		if (readyNodes.size() == 0 || freeProc.size() == 0)
 			return;
 
 		/*
@@ -47,16 +56,25 @@ public class OnlineWFD extends AllocationMethods {
 
 		// preEligible.sort((c1, c2) -> Utils.compareNode(dags, c1, c2));
 
-		List<Integer> freeProc = new ArrayList<>(availableProcs);
-
-		for (int i = 0; i < availableProcs.size(); i++) {
+		for (int i = 0; i < cores.size(); i++) {
 			if (i >= readyNodes.size())
 				break;
 
-			int core = getCoreIndexWithMinialWorkload(freeProc, history_level1);
+			int core = freeProc.get(i);
 			readyNodes.get(i).partition = core;
 			freeProc.remove(freeProc.indexOf(core));
 		}
+
+		/*
+		 * for (int i = 0; i < availableProcs.size(); i++) {
+		 * if (i >= readyNodes.size())
+		 * break;
+		 * 
+		 * int core = getCoreIndexWithMinialWorkload(freeProc, history_level1);
+		 * readyNodes.get(i).partition = core;
+		 * freeProc.remove(freeProc.indexOf(core));
+		 * }
+		 */
 
 	}
 

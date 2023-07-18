@@ -16,7 +16,7 @@ public class OnlineGYY extends AllocationMethods {
 
     @Override
     public void allocate(List<DirectedAcyclicGraph> dags, List<Node> readyNodes, List<List<Node>> localRunqueue,
-            List<Integer> availableProcs, long[] procs, List<List<Node>> history_level1,
+            List<Integer> cores, long[] procs, List<List<Node>> history_level1,
             List<List<Node>> history_level2, List<Node> history_level3, List<List<Node>> allocHistory,
             long currentTime, boolean affinity, List<Node> etHist, List<Double> speeds) {
         /*
@@ -25,8 +25,20 @@ public class OnlineGYY extends AllocationMethods {
          * procs: the next available time of each processor, size = m
          */
 
+        List<Integer> freeProc = new ArrayList<>();
+        for (int i = 0; i < cores.size(); i++) {
+            // find the available cores
+            if ((localRunqueue.get(i).size() == 0
+                    || (localRunqueue.get(i).size() > 0 && localRunqueue.get(i).get(0).start > currentTime))
+                    && procs[i] <= currentTime) {
+                freeProc.add(i);
+            }
+        }
+        // higher speed core first
+        freeProc.sort((c1, c2) -> Double.compare(speeds.get(c2), speeds.get(c1)));
+
         // no need to allocate at this time step
-        if (readyNodes.size() == 0 || availableProcs.size() == 0)
+        if (readyNodes.size() == 0 || freeProc.size() == 0)
             return;
 
         // init the partition to -1
@@ -38,7 +50,6 @@ public class OnlineGYY extends AllocationMethods {
          */
         readyNodes.sort((c1, c2) -> Double.compare(c2.sensitivity, c1.sensitivity));
 
-        List<Integer> freeProc = new ArrayList<>(availableProcs);
         List<Integer> futureProc = new ArrayList<>();
         List<Node> futureNodes = new ArrayList<>();
 
@@ -50,7 +61,7 @@ public class OnlineGYY extends AllocationMethods {
          */
 
         // find the median time
-        int busyNum = localRunqueue.size() - availableProcs.size();
+        int busyNum = localRunqueue.size() - freeProc.size();
         int heapsize = (busyNum + 1) / 2;
         PriorityQueue<Long> pq = new PriorityQueue<Long>((a, b) -> Long.compare(b, a));
         for (int i = 0; i < localRunqueue.size(); i++) {

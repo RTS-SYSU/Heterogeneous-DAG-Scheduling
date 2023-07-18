@@ -435,15 +435,8 @@ public class SimualtorGYY {
 			 * Check whether nodes in local ready queue can start
 			 */
 			List<Node> localReadyNodes = localRunQueue.get(i);
-			if (currentExe[i] == null && localReadyNodes.size() > 0 && localReadyNodes.get(0).start < systemTime) {// waiting
-																													// nodes
-																													// should
-																													// be
-																													// considered
-																													// here
-																													// //
-																													// TO
-				// DO
+			// -1 or a specific value
+			if (currentExe[i] == null && localReadyNodes.size() > 0 && localReadyNodes.get(0).start <= systemTime) {
 				Node n = localReadyNodes.get(0);
 				localReadyNodes.remove(0);
 

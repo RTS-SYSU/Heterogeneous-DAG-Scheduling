@@ -28,6 +28,7 @@ public class OnlineGYY extends AllocationMethods {
         List<Integer> freeProc = new ArrayList<>();
         for (int i = 0; i < cores.size(); i++) {
             // find the available cores
+            // no local queue or has but in the future, has margin for current task
             if ((localRunqueue.get(i).size() == 0
                     || (localRunqueue.get(i).size() > 0 && localRunqueue.get(i).get(0).start > currentTime))
                     && procs[i] <= currentTime) {
@@ -122,38 +123,105 @@ public class OnlineGYY extends AllocationMethods {
          */
         futureNodes.sort((c1, c2) -> Double.compare(c2.sensitivity, c1.sensitivity));
 
-        // match TO DO here
-        int cnt = 0;
-        while (readyNodes.size() > cnt && freeProc.size() > 0) {
-            Node tmp;
-            // boolean node_situ = false, pros_situ = false;
-            if (futureNodes.size() > 0 && futureNodes.get(0).sensitivity > readyNodes.get(0).sensitivity) {
-                // chose the future node
-                tmp = futureNodes.get(0);
+        // List<Node> current_future = new ArrayList<>();
+        int not_allocate = 0;// index to current node, can't be allocated at this time number
+        while (readyNodes.size() > not_allocate && freeProc.size() > 0) {
+            // ndoe - processor
+            if (is_future_node(readyNodes, futureNodes)) {
             } else {
-                // chose the current node
-                tmp = readyNodes.get(0);
-            }
-
-            // chose the processor
-            if (futureProc.size() > 0 && speeds.get(futureProc.get(0)) > speeds.get(freeProc.get(0))) {
-                // chose the future processor
-                if (tmp.getId() == readyNodes.get(0).getId()) {
-                    // current - future
-                } else {
-                    // future - future
+                // current node
+                int id_current = 0, id_future = 0;
+                boolean flag = false;
+                while (id_current < freeProc.size() && id_future < futureProc.size()) {
+                    if (is_future_processor(freeProc, futureProc, speeds, id_current, id_future)) {
+                        /*
+                         * // record first, may refine later
+                         * current_future.add(readyNodes.get(not_allocate));
+                         * readyNodes.get(not_allocate).partition = futureProc.get(0);
+                         * // remove
+                         * futureProc.remove(id_future);
+                         * readyNodes.remove(not_allocate);
+                         * flag = true;
+                         */
+                        // find the target current to current node if exists
+                        while (id_current < freeProc.size()
+                                && get_available_time_for_fake(freeProc.get(id_current), localRunqueue,
+                                        currentTime) < readyNodes.get(not_allocate).WCET
+                                                / speeds.get(freeProc.get(id_current))) {
+                            id_current++;
+                        }
+                        if (id_current == freeProc.size()) {
+                            break;
+                        }
+                        // compare
+                        long wcet_tmp = readyNodes.get(not_allocate).WCET;
+                        int core_cur = freeProc.get(id_current), core_fur = futureProc.get(id_future);
+                        if (wcet_tmp / speeds.get(core_cur) > get_available_time_for_fake(id_future, localRunqueue,
+                                currentTime) + wcet_tmp / speeds.get(core_fur)) {
+                            // allocate to future
+                            readyNodes.get(not_allocate).partition = core_fur;
+                            // remove
+                            readyNodes.remove(not_allocate);
+                            futureProc.remove(core_fur);
+                        } else {
+                            // allocate to current
+                            readyNodes.get(not_allocate).partition = core_cur;
+                            // remove
+                            readyNodes.remove(not_allocate);
+                            futureProc.remove(core_cur);
+                        }
+                        flag = true;
+                    } else {
+                        int core = freeProc.get(id_current);
+                        if (localRunqueue.get(core).size() > 0) {
+                            // fake
+                            if (get_available_time_for_fake(core, localRunqueue,
+                                    currentTime) < readyNodes.get(not_allocate).WCET
+                                            / speeds.get(core)) {
+                                // not allocate
+                                id_current++;
+                                continue;
+                            } else {
+                                // allocate
+                                readyNodes.get(not_allocate).partition = core;
+                                // remove
+                                readyNodes.remove(not_allocate);
+                                freeProc.remove(id_current);
+                                flag = true;
+                            }
+                        } else {
+                            // true
+                            // to do: should I change the information(procs, next available time...)?
+                            readyNodes.get(not_allocate).partition = core;
+                            // remove
+                            readyNodes.remove(not_allocate);
+                            freeProc.remove(id_current);
+                            flag = true;
+                        }
+                    }
+                    if (flag)
+                        break;
                 }
-            } else {
-                // chose the current processor
-                if (tmp.getId() == readyNodes.get(0).getId()) {
-                    // current - current
-                    tmp.partition = freeProc.get(0);
-                    freeProc.remove(0);
-                } else {
-                    // future - current
-                }
+                if (!flag)
+                    not_allocate++;
             }
         }
+    }
+
+    private boolean is_future_node(List<Node> readyNodes, List<Node> futureNodes) {
+        // exists && higher sensitivity
+        return futureNodes.size() > 0 && futureNodes.size() > 0
+                && futureNodes.get(0).sensitivity > readyNodes.get(0).sensitivity;
+    }
+
+    private boolean is_future_processor(List<Integer> freeProc, List<Integer> futureProc, List<Double> speeds,
+            int id_current, int id_future) {
+        // exists && higher speed
+        return futureProc.size() > 0 && speeds.get(futureProc.get(0)) > speeds.get(freeProc.get(0));
+    }
+
+    private long get_available_time_for_fake(int index, List<List<Node>> localRunqueue, long currentTime) {
+        return localRunqueue.get(index).get(0).start - currentTime;
     }
 
 }

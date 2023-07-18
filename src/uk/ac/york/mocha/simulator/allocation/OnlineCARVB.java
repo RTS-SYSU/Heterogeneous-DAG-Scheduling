@@ -90,7 +90,7 @@ public class OnlineCARVB extends AllocationMethods {
 		}
 
 		for (int k = 0; k < availableP.size(); k++) {
-			if (k >= preEligible.size())// why here
+			if (k >= preEligible.size())
 				break;
 
 			Pair<Integer, Integer> p = setPartition(speedUpTable, cacheTable, allocNodes, allocProcs, allocHistoryCut,

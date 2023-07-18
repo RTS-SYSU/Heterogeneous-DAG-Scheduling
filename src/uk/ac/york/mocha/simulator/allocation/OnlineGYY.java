@@ -128,12 +128,40 @@ public class OnlineGYY extends AllocationMethods {
         while (readyNodes.size() > not_allocate && freeProc.size() > 0) {
             // ndoe - processor
             if (is_future_node(readyNodes, futureNodes)) {
+                // future node
+                if (is_future_processor(freeProc, futureProc, speeds, 0, 0)) {
+                    // future - future
+                } else {
+                    // future - current
+                    int id_current = 0;
+                    // find the current processor can run the task
+                    while (id_current < freeProc.size()) {
+                        int core = freeProc.get(id_current);
+                        if (localRunqueue.get(id_current).size() == 0
+                                || (localRunqueue.get(id_current).size() > 0 && get_available_time_for_fake(core,
+                                        localRunqueue, currentTime) >= id_to_waiting.get(futureNodes.get(0).getId())
+                                                + futureNodes.get(0).WCET / speeds.get(core))) {
+                            break;
+                        } else
+                            id_current++;
+                    }
+                    if (id_current < freeProc.size()) {
+                        // can be allocated
+                        int core = freeProc.get(id_current);
+                        futureNodes.get(0).partition = core;
+                        futureNodes.get(0).start = id_to_waiting.get(futureNodes.get(0).getId());
+                        localRunqueue.get(core).add(futureNodes.get(0));
+                    }
+                    futureNodes.remove(0);
+                }
+
             } else {
                 // current node
                 int id_current = 0, id_future = 0;
                 boolean flag = false;
                 while (id_current < freeProc.size() && id_future < futureProc.size()) {
                     if (is_future_processor(freeProc, futureProc, speeds, id_current, id_future)) {
+                        // current - future
                         /*
                          * // record first, may refine later
                          * current_future.add(readyNodes.get(not_allocate));
@@ -156,22 +184,27 @@ public class OnlineGYY extends AllocationMethods {
                         // compare
                         long wcet_tmp = readyNodes.get(not_allocate).WCET;
                         int core_cur = freeProc.get(id_current), core_fur = futureProc.get(id_future);
-                        if (wcet_tmp / speeds.get(core_cur) > get_available_time_for_fake(id_future, localRunqueue,
-                                currentTime) + wcet_tmp / speeds.get(core_fur)) {
+
+                        if (currentTime + wcet_tmp / speeds.get(core_cur) > procs[core_fur]
+                                + wcet_tmp / speeds.get(core_fur)) {
                             // allocate to future
                             readyNodes.get(not_allocate).partition = core_fur;
+                            readyNodes.get(not_allocate).start = procs[core_cur];
+                            localRunqueue.get(core_fur).add(readyNodes.get(not_allocate));
                             // remove
                             readyNodes.remove(not_allocate);
                             futureProc.remove(core_fur);
                         } else {
                             // allocate to current
                             readyNodes.get(not_allocate).partition = core_cur;
+                            localRunqueue.get(core_cur).add(readyNodes.get(not_allocate));
                             // remove
                             readyNodes.remove(not_allocate);
                             futureProc.remove(core_cur);
                         }
                         flag = true;
                     } else {
+                        // current - current
                         int core = freeProc.get(id_current);
                         if (localRunqueue.get(core).size() > 0) {
                             // fake
@@ -181,9 +214,11 @@ public class OnlineGYY extends AllocationMethods {
                                 // not allocate
                                 id_current++;
                                 continue;
+                                // next iter
                             } else {
                                 // allocate
                                 readyNodes.get(not_allocate).partition = core;
+                                localRunqueue.get(core).add(0, readyNodes.get(not_allocate));
                                 // remove
                                 readyNodes.remove(not_allocate);
                                 freeProc.remove(id_current);
@@ -191,8 +226,8 @@ public class OnlineGYY extends AllocationMethods {
                             }
                         } else {
                             // true
-                            // to do: should I change the information(procs, next available time...)?
                             readyNodes.get(not_allocate).partition = core;
+                            localRunqueue.get(core).add(0, readyNodes.get(not_allocate));
                             // remove
                             readyNodes.remove(not_allocate);
                             freeProc.remove(id_current);
@@ -217,7 +252,7 @@ public class OnlineGYY extends AllocationMethods {
     private boolean is_future_processor(List<Integer> freeProc, List<Integer> futureProc, List<Double> speeds,
             int id_current, int id_future) {
         // exists && higher speed
-        return futureProc.size() > 0 && speeds.get(futureProc.get(0)) > speeds.get(freeProc.get(0));
+        return futureProc.size() > 0 && speeds.get(futureProc.get(id_future)) > speeds.get(freeProc.get(id_current));
     }
 
     private long get_available_time_for_fake(int index, List<List<Node>> localRunqueue, long currentTime) {
@@ -225,14 +260,9 @@ public class OnlineGYY extends AllocationMethods {
     }
 
 }
+
 /*
- * 关于异构处理器的构建
- * 一个数组记录处理器的执行速率
- * 如何估计下一个future节点in the waiting queue的预计开始时间？ 加一个属性记一下，max（正在执行中的父节点的预计最大值）
- * 如何把暂时有空的处理器加入列表？ // simulator line 383
- */
-/*
- * 处理节点的地址问题
- * 局部and全局
- * 状态变化如何返回到主函数中去
+ * Questions:
+ * 提前完成了future node的分配，那么未来当他被真正释放时，会不会出现重复冲突？
+ * 如果分配给future，记得标记start time -- future-current current-future
  */

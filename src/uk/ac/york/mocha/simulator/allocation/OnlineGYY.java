@@ -18,10 +18,9 @@ public class OnlineGYY extends AllocationMethods {
     public void allocate(List<DirectedAcyclicGraph> dags, List<Node> readyNodes, List<List<Node>> localRunqueue,
             List<Integer> cores, long[] procs, List<List<Node>> history_level1,
             List<List<Node>> history_level2, List<Node> history_level3, List<List<Node>> allocHistory,
-            long currentTime, boolean affinity, List<Node> etHist, List<Double> speeds) {
+            long currentTime, boolean affinity, List<Node> etHist, List<Double> speeds, Node[] currentExe) {
         /*
          * localRunqueue: size = m
-         * availableProcs: record the available cores' id
          * procs: the next available time of each processor, size = m
          */
 
@@ -85,16 +84,24 @@ public class OnlineGYY extends AllocationMethods {
         for (int i = 0; i < localRunqueue.size(); i++) {
             if (procs[i] <= medTime) {
                 futureProc.add(i);
-                // question here: does current running node in waiting list? now is 'yes'
-                // version
                 for (Node w : localRunqueue.get(i)) {
-                    nodesTobedone.add(w);
+                    if (w.start >= currentTime + medTime)
+                        break;
+                    else
+                        nodesTobedone.add(w);
+                }
+                if (currentExe[i] != null && currentExe[i].finishAt <= currentTime + medTime) {
+                    nodesTobedone.add(currentExe[i]);
                 }
             }
         }
         // determine the node to be free -- futureNodes
         for (Node tmp : nodesTobedone) {
             for (Node child : tmp.getChildren()) {
+                if (futureNodes.contains(child)) {
+                    // already added
+                    continue;
+                }
                 long worst_time = tmp.finishAt;
                 boolean isReady = true;
                 for (Node parent : child.getParent()) {
@@ -129,31 +136,28 @@ public class OnlineGYY extends AllocationMethods {
             // ndoe - processor
             if (is_future_node(readyNodes, futureNodes)) {
                 // future node
-                if (is_future_processor(freeProc, futureProc, speeds, 0, 0)) {
-                    // future - future
-                } else {
-                    // future - current
-                    int id_current = 0;
-                    // find the current processor can run the task
-                    while (id_current < freeProc.size()) {
-                        int core = freeProc.get(id_current);
-                        if (localRunqueue.get(id_current).size() == 0
-                                || (localRunqueue.get(id_current).size() > 0 && get_available_time_for_fake(core,
-                                        localRunqueue, currentTime) >= id_to_waiting.get(futureNodes.get(0).getId())
-                                                + futureNodes.get(0).WCET / speeds.get(core))) {
-                            break;
-                        } else
-                            id_current++;
-                    }
-                    if (id_current < freeProc.size()) {
-                        // can be allocated
-                        int core = freeProc.get(id_current);
-                        futureNodes.get(0).partition = core;
-                        futureNodes.get(0).start = id_to_waiting.get(futureNodes.get(0).getId());
-                        localRunqueue.get(core).add(futureNodes.get(0));
-                    }
-                    futureNodes.remove(0);
+
+                // only considered current processor, whether it should be booked or not
+                int id_current = 0;
+                // find the current processor can run the task
+                while (id_current < freeProc.size()) {
+                    int core = freeProc.get(id_current);
+                    if (localRunqueue.get(id_current).size() == 0
+                            || (localRunqueue.get(id_current).size() > 0 && get_available_time_for_fake(core,
+                                    localRunqueue, currentTime) >= id_to_waiting.get(futureNodes.get(0).getId())
+                                            + futureNodes.get(0).WCET / speeds.get(core))) {
+                        break;
+                    } else
+                        id_current++;
                 }
+                if (id_current < freeProc.size()) {
+                    // can be allocated
+                    int core = freeProc.get(id_current);
+                    futureNodes.get(0).partition = core;
+                    futureNodes.get(0).start = currentTime + id_to_waiting.get(futureNodes.get(0).getId());
+                    localRunqueue.get(core).add(futureNodes.get(0));
+                }
+                futureNodes.remove(0);
 
             } else {
                 // current node
@@ -263,6 +267,5 @@ public class OnlineGYY extends AllocationMethods {
 
 /*
  * Questions:
- * 提前完成了future node的分配，那么未来当他被真正释放时，会不会出现重复冲突？
  * 如果分配给future，记得标记start time -- future-current current-future
  */

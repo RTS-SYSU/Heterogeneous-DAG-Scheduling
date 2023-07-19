@@ -17,9 +17,10 @@ public class SystemParameters {
 	public static double[] cc_weights = { 0.6784, 0.6381, 0.5102, 0.5026, 0.6470, 0.6068 }; // two way
 	// public static double[] cc_weights = { 0.4961, 0.4343, 0.2314, 0.2055,
 	// 0.3454, 0.3642 }; // one way increase
-//	public static double[] cc_weights = { 0.4038, 0.3123, 0.2837, 0.2844, 0.4532, 0.4800 }; // one
-																							// way
-																							// decrease
+	// public static double[] cc_weights = { 0.4038, 0.3123, 0.2837, 0.2844, 0.4532,
+	// 0.4800 }; // one
+	// way
+	// decrease
 
 	// Delay enabled
 	// public static double[] cc_weights = { 0.2465, 0.3465, 0.1691, 0.1175,
@@ -63,7 +64,8 @@ public class SystemParameters {
 		SIMPLE, RANDOM, BEST_FIT, FIRST_FIT, WORST_FIT, WORST_FIT_OUR, CACHE_AWARE, CACHE_AWARE_NEW,
 		CACHE_AWARE_ROBUST_v2_1, CACHE_AWARE_ROBUST_v2_2, OFFLINE_CACHE_AWARE, CACHE_AWARE_OUR, CACHE_AWARE_RESERVE,
 		CACHE_AWARE_COMPARE, CARVB,
-		CACHE_AWARE_PREDICT_WCET, WORST_FIT_NEW, WORST_FIT_NEW_BASE, FIXED_SCHEDULE_ALLOCATION_NEW, CACHE_AWARE_NEW_BASE
+		CACHE_AWARE_PREDICT_WCET, WORST_FIT_NEW, WORST_FIT_NEW_BASE, FIXED_SCHEDULE_ALLOCATION_NEW,
+		CACHE_AWARE_NEW_BASE, GYY
 
 	};
 
@@ -71,7 +73,9 @@ public class SystemParameters {
 	 *********************** Experimental Settings ************************
 	 **********************************************************************/
 	public enum ExpName {
-		oneDAG, taskNum, recency_fault, recency_fault_util, recency_pattern, offline, offline_multi, methods, periods, tasks, sysUtil, sysUtilOneDAG, util_compare, util_compare_three, predict, predict_rule1, predict_rule2, error_crp
+		oneDAG, taskNum, recency_fault, recency_fault_util, recency_pattern, offline, offline_multi, methods, periods,
+		tasks, sysUtil, sysUtilOneDAG, util_compare, util_compare_three, predict, predict_rule1, predict_rule2,
+		error_crp
 	}
 
 	public static int NoS = 1000;

@@ -14,6 +14,7 @@ import uk.ac.york.mocha.simulator.allocation.OnlineCacheAwareRobust_v2_1;
 import uk.ac.york.mocha.simulator.allocation.OnlineCacheAwareRobust_v2_2;
 import uk.ac.york.mocha.simulator.allocation.OnlineWFDNewSimu;
 import uk.ac.york.mocha.simulator.allocation.SimpleAllocation;
+import uk.ac.york.mocha.simulator.allocation.OnlineGYY;
 import uk.ac.york.mocha.simulator.allocation.empricial.OnlineCacheAwareNewSimu_base;
 import uk.ac.york.mocha.simulator.allocation.empricial.OnlineFixedScheduleAllocation;
 import uk.ac.york.mocha.simulator.allocation.empricial.OnlineWFDNewSimu_Base;
@@ -183,6 +184,9 @@ public class SimualtorGYY {
 		AllocationMethods allocM = null;
 
 		switch (alloc) {
+			case GYY:
+				allocM = new OnlineGYY();
+				break;
 			case SIMPLE:
 				allocM = new SimpleAllocation();
 				break;
@@ -316,6 +320,9 @@ public class SimualtorGYY {
 				 * A node can execute if all its parents are finished
 				 */
 				for (Node child : n.getChildren()) {
+					// already allocated
+					if (child.start >= 0)
+						continue;
 					boolean isReady = true;
 					for (Node parent : child.getParent()) {
 						if (!parent.finish)
@@ -403,7 +410,7 @@ public class SimualtorGYY {
 			} else {
 				noCalls++;
 				allocM.allocate(dags, readyNodes, localRunQueue, cores, coreTime, history_level1, history_level2,
-						history_level3, allocHistory, systemTime, lcif, etHist, corespeed);
+						history_level3, allocHistory, systemTime, lcif, etHist, corespeed, currentExe);
 			}
 
 		} else {
@@ -411,7 +418,7 @@ public class SimualtorGYY {
 			} else {
 				noCalls++;
 				allocM.allocate(dags, readyNodes, localRunQueue, cores, coreTime, history_level1, history_level2,
-						history_level3, allocHistory, systemTime, lcif, etHist, corespeed);
+						history_level3, allocHistory, systemTime, lcif, etHist, corespeed, currentExe);
 			}
 		}
 

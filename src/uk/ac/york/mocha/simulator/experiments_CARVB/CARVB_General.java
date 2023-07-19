@@ -80,7 +80,7 @@ public class CARVB_General {
 
 		List<OneSystemResults> allRes = new ArrayList<>();
 
-		for (int i = 0; i < 1; i++) {// nos
+		for (int i = 0; i < nos; i++) {// nos
 			System.out.println(
 					"Util per task: " + SystemParameters.utilPerTask + " --- Current system number: " + (i + 1));
 
@@ -165,7 +165,7 @@ public class CARVB_General {
 			e.printStackTrace();
 		}
 
-		Simualtor sim1 = new Simualtor(SimuType.CLOCK_LEVEL, Hardware.PROC_CACHE, Allocation.WORST_FIT, // Hardware.PROC
+		Simualtor sim1 = new Simualtor(SimuType.CLOCK_LEVEL, Hardware.PROC, Allocation.WORST_FIT, // Hardware.PROC
 				RecencyType.TIME_DEFAULT, sys.getFirst(), sys.getSecond(), cores, tableSeed, lcif, speeds);
 		Pair<List<DirectedAcyclicGraph>, double[]> pair1 = sim1.simulate(print);
 
@@ -199,7 +199,7 @@ public class CARVB_General {
 		// Pair<List<DirectedAcyclicGraph>, double[]> pair3 =
 		// cacheCASim3.simulate(print);
 
-		SimualtorGYY cacheCASim2 = new SimualtorGYY(SimuType.CLOCK_LEVEL, Hardware.PROC_CACHE, Allocation.CARVB, // PROC_CACHE
+		SimualtorGYY cacheCASim2 = new SimualtorGYY(SimuType.CLOCK_LEVEL, Hardware.PROC, Allocation.CARVB, // Hardware.PROC_CACHE
 				RecencyType.TIME_DEFAULT, sys.getFirst(), sys.getSecond(), cores, tableSeed, false, speeds);
 		Pair<List<DirectedAcyclicGraph>, double[]> pair2 = cacheCASim2.simulate(print);
 

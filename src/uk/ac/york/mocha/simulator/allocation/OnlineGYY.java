@@ -264,8 +264,3 @@ public class OnlineGYY extends AllocationMethods {
     }
 
 }
-
-/*
- * Questions:
- * 如果分配给future，记得标记start time -- future-current current-future
- */

@@ -458,7 +458,8 @@ public class SimualtorGYY {
 						history_level3, n, n.partition, cacheAware, 0, variation, n.hasFaults);
 
 				// long realET = ETWithCache.getFirst().getFirst();
-				double DrealET = n.WCET / corespeed.get(i);
+				// at least 1, otherwise error will happen
+				double DrealET = Math.max(n.WCET / corespeed.get(i), 1);
 				long realET = (long) DrealET;
 				n.variation = ETWithCache.getFirst().getSecond();
 
@@ -550,7 +551,8 @@ public class SimualtorGYY {
 		}
 
 		if (systemTime == oldTime) {
-			System.out.println("Simualtor.advance(): timing error. The system time is not advanced! ");
+			System.out.println("Simualtor.advance(): self timing error. The system time is not advanced! ");
+			int pause = 0;
 			System.exit(-1);
 		}
 

@@ -80,7 +80,7 @@ public class CARVB_General {
 
 		List<OneSystemResults> allRes = new ArrayList<>();
 
-		for (int i = 0; i < nos; i++) {// nos
+		for (int i = 0; i < 2; i++) {// i < nos
 			System.out.println(
 					"Util per task: " + SystemParameters.utilPerTask + " --- Current system number: " + (i + 1));
 

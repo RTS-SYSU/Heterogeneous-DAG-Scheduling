@@ -315,7 +315,9 @@ public class Simualtor {
 			Pair<Pair<Long, Double>, Integer> ETWithCache = n.crp.computeET(-1, history_level1, history_level2,
 					history_level3, n, n.partition, cacheAware, 0, 0, n.hasFaults);
 
-			long realET = ETWithCache.getFirst().getFirst();
+			// long realET = ETWithCache.getFirst().getFirst();
+			double DrealET = Math.max(n.WCET / corespeed.get(i), 1);
+			long realET = (long) DrealET;
 			int cacheEffects = ETWithCache.getSecond();
 			totalAccess++;
 
@@ -479,7 +481,8 @@ public class Simualtor {
 		}
 
 		if (systemTime == oldTime) {
-			System.out.println("Simualtor.advance(): timing error. The system time is not advanced! ");
+			System.out.println("Simualtor.advance(): WFD timing error. The system time is not advanced! ");
+			int pause = 0;
 			System.exit(-1);
 		}
 

@@ -14,6 +14,8 @@ import uk.ac.york.mocha.simulator.allocation.OnlineCacheAwareRobust_v2_1;
 import uk.ac.york.mocha.simulator.allocation.OnlineCacheAwareWithOrdering;
 import uk.ac.york.mocha.simulator.allocation.OnlineCacheAware_ForCompare;
 import uk.ac.york.mocha.simulator.allocation.OnlineFFD;
+import uk.ac.york.mocha.simulator.allocation.OnlineGYY_WCET;
+import uk.ac.york.mocha.simulator.allocation.OnlineHSF;
 import uk.ac.york.mocha.simulator.allocation.OnlineRandom;
 import uk.ac.york.mocha.simulator.allocation.OnlineWFD;
 import uk.ac.york.mocha.simulator.allocation.OnlineWFWithOrdering;
@@ -157,6 +159,12 @@ public class Simualtor {
 		switch (alloc) {
 			case SIMPLE:
 				allocM = new SimpleAllocationConversing();
+				break;
+			case HSF:
+				allocM = new OnlineHSF();
+				break;
+			case GYY_WCET:
+				allocM = new OnlineGYY_WCET();
 				break;
 			case RANDOM:
 				allocM = new OnlineRandom();

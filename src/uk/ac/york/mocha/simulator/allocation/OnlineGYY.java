@@ -28,7 +28,7 @@ public class OnlineGYY extends AllocationMethods {
         for (int i = 0; i < cores.size(); i++) {
             // find the available cores
             // no local queue or has but in the future, has margin for current task
-            if ((localRunqueue.get(i).size() == 0
+            if (currentExe[i] == null && (localRunqueue.get(i).size() == 0
                     || (localRunqueue.get(i).size() > 0 && localRunqueue.get(i).get(0).start > currentTime))
                     && procs[i] <= currentTime) {
                 freeProc.add(i);
@@ -61,36 +61,39 @@ public class OnlineGYY extends AllocationMethods {
          */
 
         // find the median time
-        int busyNum = localRunqueue.size() - freeProc.size();
-        int heapsize = (busyNum + 1) / 2;
-        PriorityQueue<Long> pq = new PriorityQueue<Long>((a, b) -> Long.compare(b, a));
-        for (int i = 0; i < localRunqueue.size(); i++) {
-            if (localRunqueue.get(i).size() > 0) {
-                if (pq.size() < heapsize) {
-                    pq.offer(procs[i]);
-                } else {
-                    if (pq.peek() > procs[i]) {
-                        pq.poll();
-                        pq.offer(procs[i]);
-                    }
-                }
-            }
-        }
-        long medTime = pq.peek();
+        /*
+         * int busyNum = localRunqueue.size() - freeProc.size();
+         * int heapsize = (busyNum + 1) / 2;
+         * PriorityQueue<Long> pq = new PriorityQueue<Long>((a, b) -> Long.compare(b,
+         * a));
+         * for (int i = 0; i < localRunqueue.size(); i++) {
+         * if (localRunqueue.get(i).size() > 0) {
+         * if (pq.size() < heapsize) {
+         * pq.offer(procs[i]);
+         * } else {
+         * if (pq.peek() > procs[i]) {
+         * pq.poll();
+         * pq.offer(procs[i]);
+         * }
+         * }
+         * }
+         * }
+         * long medTime = pq.peek();
+         */
 
         HashMap<Integer, Long> id_to_waiting = new HashMap<>();
         // determine the core set based on medTime -- futureProc
         List<Node> nodesTobedone = new ArrayList<>();
         for (int i = 0; i < localRunqueue.size(); i++) {
-            if (procs[i] <= medTime) {
+            if (procs[i] > currentTime) {
                 futureProc.add(i);
                 for (Node w : localRunqueue.get(i)) {
-                    if (w.start >= currentTime + medTime)
+                    if (w.start > procs[i])
                         break;
                     else
                         nodesTobedone.add(w);
                 }
-                if (currentExe[i] != null && currentExe[i].finishAt <= currentTime + medTime) {
+                if (currentExe[i] != null && currentExe[i].finishAt <= procs[i]) {
                     nodesTobedone.add(currentExe[i]);
                 }
             }
@@ -98,7 +101,7 @@ public class OnlineGYY extends AllocationMethods {
         // determine the node to be free -- futureNodes
         for (Node tmp : nodesTobedone) {
             for (Node child : tmp.getChildren()) {
-                if (futureNodes.contains(child)) {
+                if (futureNodes.contains(child) || child.start != -1) {
                     // already added
                     continue;
                 }
@@ -133,8 +136,8 @@ public class OnlineGYY extends AllocationMethods {
         // List<Node> current_future = new ArrayList<>();
         int not_allocate = 0;// index to current node, can't be allocated at this time number
         while (readyNodes.size() > not_allocate && freeProc.size() > 0) {
-            // ndoe - processor
-            if (is_future_node(readyNodes, futureNodes)) {
+            // node - processor
+            if (is_future_node(readyNodes, futureNodes, not_allocate)) {
                 // future node
 
                 // only considered current processor, whether it should be booked or not
@@ -142,10 +145,10 @@ public class OnlineGYY extends AllocationMethods {
                 // find the current processor can run the task
                 while (id_current < freeProc.size()) {
                     int core = freeProc.get(id_current);
-                    if (localRunqueue.get(id_current).size() == 0
-                            || (localRunqueue.get(id_current).size() > 0 && get_available_time_for_fake(core,
+                    if (currentExe[core] == null && (localRunqueue.get(core).size() == 0
+                            || (localRunqueue.get(core).size() > 0 && get_available_time_for_fake(core,
                                     localRunqueue, currentTime) >= id_to_waiting.get(futureNodes.get(0).getId())
-                                            + futureNodes.get(0).WCET / speeds.get(core))) {
+                                            + futureNodes.get(0).WCET / speeds.get(core)))) {
                         break;
                     } else
                         id_current++;
@@ -154,7 +157,10 @@ public class OnlineGYY extends AllocationMethods {
                     // can be allocated
                     int core = freeProc.get(id_current);
                     futureNodes.get(0).partition = core;
-                    futureNodes.get(0).start = currentTime + id_to_waiting.get(futureNodes.get(0).getId());
+                    futureNodes.get(0).start = id_to_waiting.get(futureNodes.get(0).getId());
+                    double DrealET = Math.max(futureNodes.get(0).WCET / speeds.get(core), 1);
+                    long realET = (long) DrealET;
+                    futureNodes.get(0).finishAt = futureNodes.get(0).start + realET;
                     localRunqueue.get(core).add(futureNodes.get(0));
                 }
                 futureNodes.remove(0);
@@ -163,9 +169,10 @@ public class OnlineGYY extends AllocationMethods {
                 // current node
                 int id_current = 0, id_future = 0;
                 boolean flag = false;
-                while (id_current < freeProc.size() && id_future < futureProc.size()) {
+                while (id_current < freeProc.size() || id_future < futureProc.size()) {
                     if (is_future_processor(freeProc, futureProc, speeds, id_current, id_future)) {
                         // current - future
+                        // only consider current node
                         /*
                          * // record first, may refine later
                          * current_future.add(readyNodes.get(not_allocate));
@@ -177,9 +184,10 @@ public class OnlineGYY extends AllocationMethods {
                          */
                         // find the target current to current node if exists
                         while (id_current < freeProc.size()
-                                && get_available_time_for_fake(freeProc.get(id_current), localRunqueue,
-                                        currentTime) < readyNodes.get(not_allocate).WCET
-                                                / speeds.get(freeProc.get(id_current))) {
+                                && (localRunqueue.get(freeProc.get(id_current)).size() == 0 ||
+                                        get_available_time_for_fake(freeProc.get(id_current), localRunqueue,
+                                                currentTime) < readyNodes.get(not_allocate).WCET
+                                                        / speeds.get(freeProc.get(id_current)))) {
                             id_current++;
                         }
                         if (id_current == freeProc.size()) {
@@ -194,17 +202,20 @@ public class OnlineGYY extends AllocationMethods {
                             // allocate to future
                             readyNodes.get(not_allocate).partition = core_fur;
                             readyNodes.get(not_allocate).start = procs[core_cur];
+                            double DrealET = Math.max(readyNodes.get(not_allocate).WCET / speeds.get(core_fur), 1);
+                            long realET = (long) DrealET;
+                            readyNodes.get(not_allocate).finishAt = readyNodes.get(not_allocate).start + realET;
                             localRunqueue.get(core_fur).add(readyNodes.get(not_allocate));
                             // remove
                             readyNodes.remove(not_allocate);
-                            futureProc.remove(core_fur);
+                            futureProc.remove(id_future);
                         } else {
                             // allocate to current
                             readyNodes.get(not_allocate).partition = core_cur;
-                            localRunqueue.get(core_cur).add(readyNodes.get(not_allocate));
+                            localRunqueue.get(core_cur).add(0, readyNodes.get(not_allocate));
                             // remove
                             readyNodes.remove(not_allocate);
-                            futureProc.remove(core_cur);
+                            freeProc.remove(id_current);
                         }
                         flag = true;
                     } else {
@@ -247,16 +258,17 @@ public class OnlineGYY extends AllocationMethods {
         }
     }
 
-    private boolean is_future_node(List<Node> readyNodes, List<Node> futureNodes) {
+    private boolean is_future_node(List<Node> readyNodes, List<Node> futureNodes, int not_allocate) {
         // exists && higher sensitivity
-        return futureNodes.size() > 0 && futureNodes.size() > 0
+        return readyNodes.size() > not_allocate && futureNodes.size() > 0
                 && futureNodes.get(0).sensitivity > readyNodes.get(0).sensitivity;
     }
 
     private boolean is_future_processor(List<Integer> freeProc, List<Integer> futureProc, List<Double> speeds,
             int id_current, int id_future) {
         // exists && higher speed
-        return futureProc.size() > 0 && speeds.get(futureProc.get(id_future)) > speeds.get(freeProc.get(id_current));
+        return id_current >= freeProc.size() || (id_current < freeProc.size() && futureProc.size() > id_future
+                && speeds.get(futureProc.get(id_future)) > speeds.get(freeProc.get(id_current)));
     }
 
     private long get_available_time_for_fake(int index, List<List<Node>> localRunqueue, long currentTime) {

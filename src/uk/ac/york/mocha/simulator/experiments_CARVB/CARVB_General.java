@@ -199,7 +199,7 @@ public class CARVB_General {
 		// Pair<List<DirectedAcyclicGraph>, double[]> pair3 =
 		// cacheCASim3.simulate(print);
 
-		SimualtorGYY cacheCASim2 = new SimualtorGYY(SimuType.CLOCK_LEVEL, Hardware.PROC, Allocation.CARVB, // Hardware.PROC_CACHE
+		SimualtorGYY cacheCASim2 = new SimualtorGYY(SimuType.CLOCK_LEVEL, Hardware.PROC, Allocation.GYY, // Hardware.PROC_CACHE
 				RecencyType.TIME_DEFAULT, sys.getFirst(), sys.getSecond(), cores, tableSeed, false, speeds);
 		Pair<List<DirectedAcyclicGraph>, double[]> pair2 = cacheCASim2.simulate(print);
 

@@ -16,6 +16,8 @@ import uk.ac.york.mocha.simulator.allocation.OnlineWFDNewSimu;
 import uk.ac.york.mocha.simulator.allocation.SimpleAllocation;
 import uk.ac.york.mocha.simulator.allocation.OnlineGYY;
 import uk.ac.york.mocha.simulator.allocation.OnlineGYY_WCET;
+import uk.ac.york.mocha.simulator.allocation.OnlineHEFT;
+import uk.ac.york.mocha.simulator.allocation.OnlineGYY_old;
 import uk.ac.york.mocha.simulator.allocation.OnlineHSF;
 import uk.ac.york.mocha.simulator.allocation.empricial.OnlineCacheAwareNewSimu_base;
 import uk.ac.york.mocha.simulator.allocation.empricial.OnlineFixedScheduleAllocation;
@@ -188,6 +190,12 @@ public class SimualtorGYY {
 		switch (alloc) {
 			case GYY:
 				allocM = new OnlineGYY();
+				break;
+			case GYY_old:
+				allocM = new OnlineGYY_old();
+				break;
+			case HEFT:
+				allocM = new OnlineHEFT();
 				break;
 			case HSF:
 				allocM = new OnlineHSF();

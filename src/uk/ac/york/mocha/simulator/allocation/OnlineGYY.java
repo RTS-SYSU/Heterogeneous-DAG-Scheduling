@@ -48,7 +48,19 @@ public class OnlineGYY extends AllocationMethods {
          * sort ready nodes
          * higher sensitivity first
          */
-        readyNodes.sort((c1, c2) -> Double.compare(c2.sensitivity, c1.sensitivity));
+        // readyNodes.sort((c1, c2) -> Double.compare(c2.sensitivity, c1.sensitivity));
+        readyNodes.sort((c1, c2) -> {
+            if (c1.sensitivity >= c2.sensitivity && c1.rank_down >= c2.rank_down) {
+                return -1;
+            } else if (c2.sensitivity >= c1.sensitivity && c2.rank_down >= c1.rank_down) {
+                return 1;
+            } else {
+                if (c1.WCET >= c2.WCET)
+                    return -1;
+                else
+                    return 1;
+            }
+        });
 
         List<Integer> futureProc = new ArrayList<>();
         List<Node> futureNodes = new ArrayList<>();
@@ -131,7 +143,19 @@ public class OnlineGYY extends AllocationMethods {
          * sort ready nodes
          * higher sensitivity first
          */
-        futureNodes.sort((c1, c2) -> Double.compare(c2.sensitivity, c1.sensitivity));
+        // futureNodes.sort((c1, c2) -> Double.compare(c2.sensitivity, c1.sensitivity));
+        futureNodes.sort((c1, c2) -> {
+            if (c1.sensitivity >= c2.sensitivity && c1.rank_down >= c2.rank_down) {
+                return -1;
+            } else if (c2.sensitivity >= c1.sensitivity && c2.rank_down >= c1.rank_down) {
+                return 1;
+            } else {
+                if (c1.WCET >= c2.WCET)
+                    return -1;
+                else
+                    return 1;
+            }
+        });
 
         // List<Node> current_future = new ArrayList<>();
         int not_allocate = 0;// index to current node, can't be allocated at this time number
@@ -260,8 +284,17 @@ public class OnlineGYY extends AllocationMethods {
 
     private boolean is_future_node(List<Node> readyNodes, List<Node> futureNodes, int not_allocate) {
         // exists && higher sensitivity
+        /*
+         * return readyNodes.size() > not_allocate && futureNodes.size() > 0
+         * && futureNodes.get(0).sensitivity > readyNodes.get(not_allocate).sensitivity;
+         */
+        if (futureNodes.size() == 0)
+            return false;
+        boolean x = futureNodes.get(0).sensitivity >= readyNodes.get(not_allocate).sensitivity;
+        boolean y = futureNodes.get(0).rank_down >= readyNodes.get(not_allocate).rank_down;
         return readyNodes.size() > not_allocate && futureNodes.size() > 0
-                && futureNodes.get(0).sensitivity > readyNodes.get(0).sensitivity;
+                && ((x && y)
+                        || (((x && !y) || (!x && y)) && futureNodes.get(0).WCET >= readyNodes.get(not_allocate).WCET));
     }
 
     private boolean is_future_processor(List<Integer> freeProc, List<Integer> futureProc, List<Double> speeds,

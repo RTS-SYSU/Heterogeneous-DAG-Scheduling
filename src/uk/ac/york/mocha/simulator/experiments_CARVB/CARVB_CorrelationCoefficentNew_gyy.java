@@ -132,8 +132,9 @@ public class CARVB_CorrelationCoefficentNew_gyy {
 			long makespan = runTwo(sys, cores, seed, print);
 
 			ChangingNodeInfo infoCap = infoCaps.get(0);
-			// infoCap.makespanChange = (double) (makespan - makespan1) / (double) makespan;
-			infoCap.makespanChange = (double) (makespan - makespan1); // new subtracts old
+			infoCap.makespanChange = (double) (makespan - makespan1) / (double) makespan;
+			// infoCap.makespanChange = (double) (makespan - makespan1); // new subtracts
+			// old
 
 			write(infoCap, cores, judgement, id, true, effect);
 		}

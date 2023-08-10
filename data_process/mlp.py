@@ -61,13 +61,25 @@ if __name__ == '__main__':
         for line in f:
             arr.append([float(x) for x in line.split()])
     
-    # load the model
-    path = "data_process/model/deep"
+    # load the model(CARVB)
+    # path = "data_process/model/deep"
+    # file_name = "/sota_for_SGD.pkl"
+    # model_path = path + file_name
+
+    # scaler1 = pickle.load(open('data_process/scaler_x.pkl', 'rb'))
+    # scaler2 = pickle.load(open('data_process/scaler_y.pkl', 'rb'))
+
+    # load the model(OUR priority)
+    # path = "data_process/model/WCET"
+    '''arr = np.array(arr)
+    arr = arr[:, [2, 3, 6, 7, 8, 9]]'''
+    path = "data_process/model/WCET"
     file_name = "/sota_for_SGD.pkl"
     model_path = path + file_name
 
-    scaler1 = pickle.load(open('data_process/scaler_x.pkl', 'rb'))
-    scaler2 = pickle.load(open('data_process/scaler_y.pkl', 'rb'))
+    scaler1 = pickle.load(open('data_process/scaler_x_new.pkl', 'rb'))
+    scaler2 = pickle.load(open('data_process/scaler_y_new.pkl', 'rb'))
+
     arr = scaler1.transform(arr)
     test_data = torch.tensor(arr, dtype=torch.float32)
 

@@ -7,7 +7,8 @@ for task = 1
      % data2 = readmatrix(strcat('selfdata/',metric,num2str(task), '_2.0_B', '.txt'));
      % data = vertcat(data1, data2);
      % data = data(:,1:10);
-    data = readmatrix(strcat('taskNum/',metric ,num2str(task), '_2.0', '.txt'));
+    data = readmatrix(strcat('taskNum/',metric ,num2str(task), '_0.4', '.txt'));
+    % data = data(:,1:10);
     instanceNo = readmatrix(strcat('taskNum/','instanceNum_',num2str(task), '_2.0', '.txt'));
     
 %     data = readmatrix(strcat('offline_multi/',metric ,num2str(task), '_0.8','_TIME_DEFAULT', '.txt'));
@@ -128,6 +129,6 @@ for task = 1
 %     set(hleg1,'FontSize',14);
     
     
-    saveas(gcf,strcat('figs/','ep_',metric,num2str(task),'.eps'), 'epsc');
-    saveas(gcf,strcat('figs/','ep_',metric,num2str(task),'.png'));
+    saveas(gcf,strcat('figs/','epTIME_',metric,num2str(task),'.eps'), 'epsc');
+    saveas(gcf,strcat('figs/','epTIME_',metric,num2str(task),'.png'));
 end

@@ -6,6 +6,20 @@
     "configurations": [
         {
             "type": "java",
+            "name": "SimualtorGYY",
+            "request": "launch",
+            "mainClass": "uk.ac.york.mocha.simulator.simulator.SimualtorGYY",
+            "projectName": "cache-aware-allocation-main_b508bcf8"
+        },
+        {
+            "type": "java",
+            "name": "CARVB_CorrelationCoefficentNew_HEFT",
+            "request": "launch",
+            "mainClass": "uk.ac.york.mocha.simulator.experiments_CARVB.CARVB_CorrelationCoefficentNew_HEFT",
+            "projectName": "cache-aware-allocation-main_b508bcf8"
+        },
+        {
+            "type": "java",
             "name": "Current File",
             "request": "launch",
             "mainClass": "${file}"

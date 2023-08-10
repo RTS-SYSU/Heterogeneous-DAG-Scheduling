@@ -6,7 +6,7 @@ len = 300;% 300
 metric = 'makespan_';
 % colors=["b";"r";"g";"k"];
 colors=[[0.8500 0.3250 0.0980]; [0 0.4470 0.7410];  [0.9290 0.6940 0.1250]; [0.4660, 0.6740, 0.1880]; [0.3010, 0.7450, 0.9330]; [0.6350, 0.0780, 0.1840]];
-methods = ["WF+OLD";"HSF+NEW";"HSF+OLD";"WF+NEW";"SOTA";"HEFT"];
+methods = ["sen+OLD";"sen+NEW";"rank+OLD";"rank+NEW"];
 % "Worst-fit";
 
 systemNo = 100; % 500

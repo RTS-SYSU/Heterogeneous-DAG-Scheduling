@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.math3.util.Pair;
+import org.python.antlr.ast.If;
 
 import uk.ac.york.mocha.simulator.allocation.AllocationMethods;
 import uk.ac.york.mocha.simulator.allocation.OnlineCARVB;
@@ -17,6 +18,7 @@ import uk.ac.york.mocha.simulator.allocation.SimpleAllocation;
 import uk.ac.york.mocha.simulator.allocation.OnlineGYY;
 import uk.ac.york.mocha.simulator.allocation.OnlineGYY_WCET;
 import uk.ac.york.mocha.simulator.allocation.OnlineHEFT;
+import uk.ac.york.mocha.simulator.allocation.OnlineHEFT_NEW;
 import uk.ac.york.mocha.simulator.allocation.OnlineGYY_old;
 import uk.ac.york.mocha.simulator.allocation.OnlineHSF;
 import uk.ac.york.mocha.simulator.allocation.empricial.OnlineCacheAwareNewSimu_base;
@@ -194,6 +196,9 @@ public class SimualtorGYY {
 			case GYY_old:
 				allocM = new OnlineGYY_old();
 				break;
+			case HEFT_NEW:
+				allocM = new OnlineHEFT_NEW();
+				break;
 			case HEFT:
 				allocM = new OnlineHEFT();
 				break;
@@ -337,7 +342,7 @@ public class SimualtorGYY {
 				 */
 				for (Node child : n.getChildren()) {
 					// already allocated
-					if (child.start >= 0)
+					if (child.start >= 0 || child.partition != -1)
 						continue;
 					boolean isReady = true;
 					for (Node parent : child.getParent()) {
@@ -482,6 +487,10 @@ public class SimualtorGYY {
 				if (n.getDagInstNo() >= SystemParameters.etHist_start) { // && n.getDagInstNo() <
 																			// SystemParameters.endInstNo
 					etHist.add(n);
+				}
+
+				if (n.partition == -1) {
+					int pass = 1;
 				}
 
 				n.start = systemTime;

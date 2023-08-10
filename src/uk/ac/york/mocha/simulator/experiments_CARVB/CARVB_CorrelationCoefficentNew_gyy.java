@@ -274,37 +274,40 @@ public class CARVB_CorrelationCoefficentNew_gyy {
 
 			int indexN = all.indexOf(n);
 
-			// configNum[i] = Double.parseDouble(df.format(1- ((double) indexN /
-			// (double) all.size())));
+			// configNum[i] = Double.parseDouble(df.format(1 - ((double) indexN / (double)
+			// all.size())));
+
+			if (effect > 0) {
+				info.changingNodeByPercent[i] = Double.parseDouble(df.format(value / max));
+				info.changingNodeByFlag[i] = 1 - Double.parseDouble(df.format((double) indexN
+						/ (double) all.size()));
+				info.changingNodeAbsolute = Double
+						.parseDouble(df.format((double) (n.getWCET() - n.getWCET() * (1 + effect))));
+
+			} else {
+				info.changingNodeByPercent[i] = -Double.parseDouble(df.format(value / max));
+				info.changingNodeByFlag[i] = Double.parseDouble(df.format((double) indexN /
+						(double) all.size())) - 1;
+				info.changingNodeAbsolute = -Double
+						.parseDouble(df.format((double) (n.getWCET() - n.getWCET() * (1 + effect))));
+			}
 
 			/*
 			 * if (effect > 0) {
-			 * info.changingNodeByPercent[i] = Double.parseDouble(df.format(value / max));
+			 * info.changingNodeByPercent[i] = Double.parseDouble(df.format(value));
 			 * info.changingNodeByFlag[i] = 1 - Double.parseDouble(df.format((double) indexN
 			 * / (double) all.size()));
 			 * info.changingNodeAbsolute = Double
 			 * .parseDouble(df.format((double) (n.getWCET() - n.getWCET() * (1 + effect))));
 			 * 
 			 * } else {
-			 * info.changingNodeByPercent[i] = -Double.parseDouble(df.format(value / max));
+			 * info.changingNodeByPercent[i] = -Double.parseDouble(df.format(value));
 			 * info.changingNodeByFlag[i] = Double.parseDouble(df.format((double) indexN /
 			 * (double) all.size())) - 1;
 			 * info.changingNodeAbsolute = -Double
 			 * .parseDouble(df.format((double) (n.getWCET() - n.getWCET() * (1 + effect))));
 			 * }
 			 */
-			if (effect > 0) {
-				info.changingNodeByPercent[i] = Double.parseDouble(df.format(value));
-				info.changingNodeByFlag[i] = 1 - Double.parseDouble(df.format((double) indexN / (double) all.size()));
-				info.changingNodeAbsolute = Double
-						.parseDouble(df.format((double) (n.getWCET() - n.getWCET() * (1 + effect))));
-
-			} else {
-				info.changingNodeByPercent[i] = -Double.parseDouble(df.format(value));
-				info.changingNodeByFlag[i] = Double.parseDouble(df.format((double) indexN / (double) all.size())) - 1;
-				info.changingNodeAbsolute = -Double
-						.parseDouble(df.format((double) (n.getWCET() - n.getWCET() * (1 + effect))));
-			}
 
 			// if (indexN <= (int) math.ceil((double) judgement * (double)
 			// all.size())) {

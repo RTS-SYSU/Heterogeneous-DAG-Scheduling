@@ -47,28 +47,42 @@ public class OnlineHEFT extends AllocationMethods {
 
 		List<Integer> freeProc = new ArrayList<>(availableProcs);
 
-		int allocate = 0;
-		while (allocate < readyNodes.size()) {
-			int core = getCore(readyNodes.get(allocate), freeProc, speeds, procs, localRunqueue);
-			if (core == -1) {
-				allocate++;
-				continue;
-			}
-			readyNodes.get(allocate).partition = core;
-			localRunqueue.get(core).add(readyNodes.get(allocate));
-			readyNodes.remove(allocate);
+		// int allocate = 0;
+		while (readyNodes.size() > 0) {
+			int core = getCore_old(readyNodes.get(0), freeProc, speeds, procs,
+					localRunqueue, currentTime);
+			/*
+			 * if (core == -1) {
+			 * allocate++;
+			 * continue;
+			 * }
+			 */
+			readyNodes.get(0).partition = core;
+			localRunqueue.get(core).add(readyNodes.get(0));
+			readyNodes.remove(0);
 		}
+
+		/*
+		 * for (int i = 0; i < availableProcs.size(); i++) {
+		 * if (i >= readyNodes.size())
+		 * break;
+		 * 
+		 * int core = freeProc.get(0);
+		 * readyNodes.get(i).partition = core;
+		 * freeProc.remove(freeProc.indexOf(core));
+		 * }
+		 */
 
 	}
 
-	public int getCore(Node n, List<Integer> freeProc, List<Double> speeds, long[] procs,
-			List<List<Node>> localRunqueue) {
+	public int getCore_old(Node n, List<Integer> freeProc, List<Double> speeds, long[] procs,
+			List<List<Node>> localRunqueue, long currentTime) {
 
 		int partition = -1;
 		double EFT = -1;
 
 		for (int i = 0; i < freeProc.size(); i++) {
-			double tmp = procs[i] + n.WCET / speeds.get(i);
+			double tmp = Math.max(0, procs[i] - currentTime) + n.WCET / speeds.get(i);
 			if (localRunqueue.get(i).size() > 0) {
 				for (Node m : localRunqueue.get(i)) {
 					tmp += m.WCET / speeds.get(i);
@@ -81,6 +95,24 @@ public class OnlineHEFT extends AllocationMethods {
 		}
 
 		return partition;
+	}
+
+	public int getCore(List<Integer> freeProc, List<List<Node>> history_level1) {
+
+		List<Long> accumaltedWorkload = new ArrayList<>();
+
+		for (int i = 0; i < freeProc.size(); i++) {
+			List<Node> nodeHis = history_level1.get(freeProc.get(i));
+
+			long accumated = nodeHis.stream().mapToLong(c -> c.finishAt - c.start).sum();
+
+			accumaltedWorkload.add(accumated);
+		}
+
+		long minWorkload = Collections.min(accumaltedWorkload);
+		int coreIndex = accumaltedWorkload.indexOf(minWorkload);
+
+		return freeProc.get(coreIndex);
 	}
 
 }

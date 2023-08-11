@@ -160,11 +160,12 @@ public class OnlineGYY extends AllocationMethods {
                     return 1;
             }
         });
-        int limit = 5;
+        int limit = 2;
         if (futureNodes.size() > limit)
             futureNodes = futureNodes.subList(0, limit);
 
         while (readyNodes.size() > 0) {
+
             /*
              * if (readyNodes.get(0).getId() == 0) {
              * int e = 0;

@@ -59,6 +59,7 @@ public class Node implements Serializable {
 	public long rank_up, rank_down;// up should add itself wcet, down doesn't need to add self
 	public int topology_order;
 	public int change_limit = 0;
+	public double gyy_priority = 1;
 
 	// public long globalMaxPathET = -1;
 	// public long globalMaxPathNum = -1;
@@ -262,6 +263,7 @@ public class Node implements Serializable {
 				record = suc.rank_down + suc.WCET;
 		}
 		this.setNodeDown(record);
+		gyy_priority = record;// edit here
 	}
 
 	public void UpDate_Diff() {

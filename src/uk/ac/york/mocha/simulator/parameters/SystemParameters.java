@@ -65,7 +65,7 @@ public class SystemParameters {
 		CACHE_AWARE_ROBUST_v2_1, CACHE_AWARE_ROBUST_v2_2, OFFLINE_CACHE_AWARE, CACHE_AWARE_OUR, CACHE_AWARE_RESERVE,
 		CACHE_AWARE_COMPARE, CARVB,
 		CACHE_AWARE_PREDICT_WCET, WORST_FIT_NEW, WORST_FIT_NEW_BASE, FIXED_SCHEDULE_ALLOCATION_NEW,
-		CACHE_AWARE_NEW_BASE, GYY, HSF, GYY_WCET, GYY_old, HEFT, HEFT_NEW
+		CACHE_AWARE_NEW_BASE, GYY, HSF, GYY_WCET, GYY_old, HEFT, HEFT_NEW, CPOP, CPOP_NEW, gyy_test
 
 	};
 
@@ -85,7 +85,7 @@ public class SystemParameters {
 	/**********************************************************************
 	 ************************** Number of cores ***************************
 	 **********************************************************************/
-	public static int coreNum = 8;
+	public static int coreNum = 4;// 4
 
 	/**********************************************************************
 	 ************************** Cache Hierarchy ***************************
@@ -100,9 +100,9 @@ public class SystemParameters {
 	/* parameters for generic DAGs */
 	public static final double connectProb = 0.2;
 	public static final int minLayer = 5;
-	public static final int maxLayer = 10;
-	public static int minParal = 2;
-	public static int maxParal = 10;
+	public static final int maxLayer = 10;// 10
+	public static int minParal = 2;// 2
+	public static int maxParal = 10;// 10
 
 	/* parameters for NFJ DAGs */
 	public static final int depth = 5;

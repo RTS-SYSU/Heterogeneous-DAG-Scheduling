@@ -7,7 +7,7 @@ for task = 1
      % data2 = readmatrix(strcat('selfdata/',metric,num2str(task), '_2.0_B', '.txt'));
      % data = vertcat(data1, data2);
      % data = data(:,1:10);
-    data = readmatrix(strcat('taskNum/',metric ,num2str(task), '_0.4', '.txt'));
+    data = readmatrix(strcat('taskNum/',metric ,num2str(task), '_2.0', '.txt'));
     % data = data(:,1:10);
     instanceNo = readmatrix(strcat('taskNum/','instanceNum_',num2str(task), '_2.0', '.txt'));
     
@@ -91,7 +91,7 @@ for task = 1
         end
     end
     
-    ylim([0, 1.1]);
+    %ylim([0.8, 1.1]);
     
     ax = gca(); 
     ax.TickLabelInterpreter = 'tex';

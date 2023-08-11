@@ -639,9 +639,9 @@ public class SystemGenerator {
 
 		if (fixed) {
 			// 123456
-			random.setSeed(2023);
+			random.setSeed(666);
 		}
-		double l = 0.5, r = 5.0;
+		double l = 0.5, r = 10.0;
 		for (int i = 0; i < cores; i++) {
 			speeds.add(l + (r - l) * random.nextDouble());
 		}

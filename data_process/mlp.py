@@ -73,12 +73,12 @@ if __name__ == '__main__':
     # path = "data_process/model/WCET"
     '''arr = np.array(arr)
     arr = arr[:, [2, 3, 6, 7, 8, 9]]'''
-    path = "data_process/model/WCET"
+    path = "data_process/model/WCET"#WCET
     file_name = "/sota_for_SGD.pkl"
     model_path = path + file_name
 
-    scaler1 = pickle.load(open('data_process/scaler_x_new.pkl', 'rb'))
-    scaler2 = pickle.load(open('data_process/scaler_y_new.pkl', 'rb'))
+    scaler1 = pickle.load(open('data_process/scaler_x_new.pkl', 'rb'))#substract _add
+    scaler2 = pickle.load(open('data_process/scaler_y_new.pkl', 'rb'))#same
 
     arr = scaler1.transform(arr)
     test_data = torch.tensor(arr, dtype=torch.float32)

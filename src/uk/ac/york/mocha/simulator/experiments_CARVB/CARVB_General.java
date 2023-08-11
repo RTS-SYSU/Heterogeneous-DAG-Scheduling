@@ -31,7 +31,7 @@ public class CARVB_General {
 
 	static DecimalFormat df = new DecimalFormat("#.###");
 
-	static int cores = 4;
+	static int cores = 8;// 4
 	static int nos = 100;// 500
 	static int intanceNum = 10;// 100
 
@@ -159,6 +159,7 @@ public class CARVB_General {
 			for (DirectedAcyclicGraph d : sys.getFirst()) {
 				for (Node n : d.getFlatNodes()) {
 					n.sensitivity = myOutputList.get(feature_id++);
+					n.gyy_priority = (1 + n.sensitivity) * n.gyy_priority;// edit here
 				}
 			}
 		} catch (IOException e) {
@@ -240,7 +241,7 @@ public class CARVB_General {
 		Pair<List<DirectedAcyclicGraph>, double[]> pair2 = cacheCASim2.simulate(print);
 
 		// HEFT rank+old
-		SimualtorHEFT cacheCASim3 = new SimualtorHEFT(SimuType.CLOCK_LEVEL,
+		SimualtorGYY cacheCASim3 = new SimualtorGYY(SimuType.CLOCK_LEVEL,
 				Hardware.PROC, Allocation.HEFT, // Hardware.PROC_CACHE
 				RecencyType.TIME_DEFAULT, sys.getFirst(), sys.getSecond(), cores, tableSeed,
 				false, speeds);
@@ -253,12 +254,26 @@ public class CARVB_General {
 				false, speeds);
 		Pair<List<DirectedAcyclicGraph>, double[]> pair4 = cacheCASim4.simulate(print);
 
+		// CPOP
+		SimualtorGYY cacheCASim5 = new SimualtorGYY(SimuType.CLOCK_LEVEL,
+				Hardware.PROC, Allocation.CPOP, // Hardware.PROC_CACHE
+				RecencyType.TIME_DEFAULT, sys.getFirst(), sys.getSecond(), cores, tableSeed,
+				false, speeds);
+		Pair<List<DirectedAcyclicGraph>, double[]> pair5 = cacheCASim5.simulate(print);
+
+		// CPOP
+		SimualtorGYY cacheCASim6 = new SimualtorGYY(SimuType.CLOCK_LEVEL,
+				Hardware.PROC, Allocation.gyy_test, // Hardware.PROC_CACHE
+				RecencyType.TIME_DEFAULT, sys.getFirst(), sys.getSecond(), cores, tableSeed,
+				false, speeds);
+		Pair<List<DirectedAcyclicGraph>, double[]> pair6 = cacheCASim6.simulate(print);
+
 		List<DirectedAcyclicGraph> m1 = pair1.getFirst();
 		List<DirectedAcyclicGraph> m2 = pair2.getFirst();
 		List<DirectedAcyclicGraph> m3 = pair3.getFirst();
 		List<DirectedAcyclicGraph> m4 = pair4.getFirst();
-		// List<DirectedAcyclicGraph> m5 = pair5.getFirst();
-		// List<DirectedAcyclicGraph> m6 = pair6.getFirst();
+		List<DirectedAcyclicGraph> m5 = pair5.getFirst();
+		List<DirectedAcyclicGraph> m6 = pair6.getFirst();
 
 		List<List<DirectedAcyclicGraph>> allMethods = new ArrayList<>();
 
@@ -266,8 +281,8 @@ public class CARVB_General {
 		List<DirectedAcyclicGraph> method2 = new ArrayList<>();
 		List<DirectedAcyclicGraph> method3 = new ArrayList<>();
 		List<DirectedAcyclicGraph> method4 = new ArrayList<>();
-		// List<DirectedAcyclicGraph> method5 = new ArrayList<>();
-		// List<DirectedAcyclicGraph> method6 = new ArrayList<>();
+		List<DirectedAcyclicGraph> method5 = new ArrayList<>();
+		List<DirectedAcyclicGraph> method6 = new ArrayList<>();
 
 		List<DirectedAcyclicGraph> dags = sys.getFirst();
 
@@ -288,8 +303,8 @@ public class CARVB_General {
 				method2.add(m2.get(i));
 				method3.add(m3.get(i));
 				method4.add(m4.get(i));
-				// method5.add(m5.get(i));
-				// method6.add(m6.get(i));
+				method5.add(m5.get(i));
+				method6.add(m6.get(i));
 				count++;
 			}
 		}
@@ -298,16 +313,16 @@ public class CARVB_General {
 		allMethods.add(method2);
 		allMethods.add(method3);
 		allMethods.add(method4);
-		// allMethods.add(method5);
-		// allMethods.add(method6);
+		allMethods.add(method5);
+		allMethods.add(method6);
 
 		List<double[]> cachePerformance = new ArrayList<>();
 		cachePerformance.add(pair1.getSecond());
 		cachePerformance.add(pair2.getSecond());
 		cachePerformance.add(pair3.getSecond());
 		cachePerformance.add(pair4.getSecond());
-		// cachePerformance.add(pair5.getSecond());
-		// cachePerformance.add(pair6.getSecond());
+		cachePerformance.add(pair5.getSecond());
+		cachePerformance.add(pair6.getSecond());
 
 		OneSystemResults result = new OneSystemResults(allMethods, cachePerformance);
 

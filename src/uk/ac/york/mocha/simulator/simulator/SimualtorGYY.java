@@ -19,6 +19,8 @@ import uk.ac.york.mocha.simulator.allocation.OnlineGYY;
 import uk.ac.york.mocha.simulator.allocation.OnlineGYY_WCET;
 import uk.ac.york.mocha.simulator.allocation.OnlineHEFT;
 import uk.ac.york.mocha.simulator.allocation.OnlineHEFT_NEW;
+import uk.ac.york.mocha.simulator.allocation.OnlineCPOP;
+import uk.ac.york.mocha.simulator.allocation.Onlinegyy_test;
 import uk.ac.york.mocha.simulator.allocation.OnlineGYY_old;
 import uk.ac.york.mocha.simulator.allocation.OnlineHSF;
 import uk.ac.york.mocha.simulator.allocation.empricial.OnlineCacheAwareNewSimu_base;
@@ -201,6 +203,12 @@ public class SimualtorGYY {
 				break;
 			case HEFT:
 				allocM = new OnlineHEFT();
+				break;
+			case gyy_test:
+				allocM = new Onlinegyy_test();
+				break;
+			case CPOP:
+				allocM = new OnlineCPOP();
 				break;
 			case HSF:
 				allocM = new OnlineHSF();
@@ -562,9 +570,20 @@ public class SimualtorGYY {
 			/*
 			 * earliest finish of executing node.
 			 */
-			for (long i : coreTime) {
-				if (i > systemTime)
-					earliestFinish = earliestFinish < i ? earliestFinish : i;
+			/*
+			 * for (long i : coreTime) {
+			 * if (i > systemTime)
+			 * earliestFinish = earliestFinish < i ? earliestFinish : i;
+			 * }
+			 */
+			for (int i = 0; i < coreTime.length; i++) {
+				long tmp = coreTime[i];
+				if (tmp > systemTime)
+					earliestFinish = earliestFinish < tmp ? earliestFinish : tmp;
+				else if (localRunQueue.get(i).size() > 0) {
+					earliestFinish = earliestFinish < localRunQueue.get(i).get(0).start ? earliestFinish
+							: localRunQueue.get(i).get(0).start;
+				}
 			}
 
 			/*

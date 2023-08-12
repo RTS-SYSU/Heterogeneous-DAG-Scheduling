@@ -160,7 +160,7 @@ public class OnlineGYY extends AllocationMethods {
                     return 1;
             }
         });
-        int limit = 2;
+        int limit = 3;
         if (futureNodes.size() > limit)
             futureNodes = futureNodes.subList(0, limit);
 

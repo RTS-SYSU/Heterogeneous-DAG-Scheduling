@@ -115,7 +115,7 @@ public class OnlineHEFT_NEW extends AllocationMethods {
 		 */
 		// futureNodes.sort((c1, c2) -> Double.compare(c2.sensitivity, c1.sensitivity));
 		futureNodes.sort((c1, c2) -> Double.compare(c2.rank_down, c1.rank_down));
-		int limit = 2;
+		int limit = 3;
 		if (futureNodes.size() > limit)
 			futureNodes = futureNodes.subList(0, limit);
 

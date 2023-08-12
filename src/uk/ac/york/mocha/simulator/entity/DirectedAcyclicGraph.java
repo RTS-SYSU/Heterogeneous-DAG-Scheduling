@@ -70,6 +70,12 @@ public class DirectedAcyclicGraph implements Serializable {
 	public long variation = 0;
 
 	/*
+	 * new metrics
+	 */
+	public double SLR = 0.0;
+	public double speedup = 0.0;
+
+	/*
 	 * Offline parameters
 	 */
 	public boolean hard = false;

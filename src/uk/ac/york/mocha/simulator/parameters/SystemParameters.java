@@ -85,7 +85,7 @@ public class SystemParameters {
 	/**********************************************************************
 	 ************************** Number of cores ***************************
 	 **********************************************************************/
-	public static int coreNum = 4;// 4
+	public static int coreNum = 8;// 4
 
 	/**********************************************************************
 	 ************************** Cache Hierarchy ***************************
@@ -98,11 +98,11 @@ public class SystemParameters {
 	 **********************************************************************/
 
 	/* parameters for generic DAGs */
-	public static final double connectProb = 0.2;
+	public static final double connectProb = 0.2;// 0.2
 	public static final int minLayer = 5;
 	public static final int maxLayer = 10;// 10
 	public static int minParal = 2;// 2
-	public static int maxParal = 10;// 10
+	public static int maxParal = 30;// 10
 
 	/* parameters for NFJ DAGs */
 	public static final int depth = 5;
